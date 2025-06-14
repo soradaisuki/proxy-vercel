@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: puppeteer-proxy
+    env: node
+    plan: free
+    buildCommand: yarn install
+    startCommand: yarn start
+    region: oregon
+    runtime: node
+    branch: main
+    repo: https://github.com/soradaisuki/proxy-vercel
