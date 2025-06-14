@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Puppeteer Chrome path trên Render sau khi cài bằng `npx puppeteer browsers install chrome`
-const chromePath = "/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.70/chrome-linux64/chrome";
+const chromePath = "./opt/render/.cache/puppeteer/chrome/linux-137.0.7151.70/chrome-linux64/chrome";
 
 app.get("/api/proxy", async (req, res) => {
   const { url } = req.query;
