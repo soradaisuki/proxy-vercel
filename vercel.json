@@ -9,7 +9,6 @@
   "routes": [
     {
       "src": "/api/proxy",
-      "methods": ["GET"],
       "dest": "api/proxy.js"
     }
   ]
