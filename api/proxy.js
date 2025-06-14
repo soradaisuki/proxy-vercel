@@ -1,8 +1,9 @@
-const axios = require('axios');
+// File: /pages/api/proxy.js hoặc /api/proxy.js (tùy cấu trúc)
+import axios from 'axios';
 
-(async () => {
+export default async function handler(req, res) {
   try {
-    const res = await axios.get('https://api.cryptorank.io/v0/funding-rounds-v2/find?search=zeta', {
+    const response = await axios.get('https://api.cryptorank.io/v0/funding-rounds-v2/find?search=zeta', {
       headers: {
         'accept': '*/*',
         'accept-language': 'en-US,en;q=0.9',
@@ -14,8 +15,11 @@ const axios = require('axios');
       decompress: true
     });
 
-    console.log(res.data);
+    res.status(200).json(response.data);
   } catch (err) {
-    console.error('❌ Request lỗi:', err.response?.status, err.response?.data);
+    console.error('❌ Request lỗi:', err.message);
+    res.status(err.response?.status || 500).json({
+      error: err.response?.data || 'Đã xảy ra lỗi khi truy vấn API'
+    });
   }
-})();
+}
