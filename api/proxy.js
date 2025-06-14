@@ -13,7 +13,7 @@ module.exports = async (req, res) => {
   try {
     const response = await axios.get(url, {
       timeout: 15000,
-      responseType: "text", // trả về raw text, tránh lỗi parse gzip
+      responseType: "text",
       decompress: true,
       headers: {
         "User-Agent":
@@ -29,6 +29,20 @@ module.exports = async (req, res) => {
 
     res.status(200).send(response.data);
   } catch (err) {
-    res.status(500).json({ error: `Lỗi khi request: ${err.message}` });
+    // In ra chi tiết lỗi để debug (hiện trong Vercel logs)
+    console.error("❌ Lỗi khi gọi API:", {
+      message: err.message,
+      status: err.response?.status,
+      statusText: err.response?.statusText,
+      data: err.response?.data,
+      url: err.config?.url,
+    });
+
+    res.status(500).json({
+      error: "Lỗi khi request",
+      message: err.message,
+      status: err.response?.status || null,
+      data: typeof err.response?.data === "string" ? err.response.data : null,
+    });
   }
 };
