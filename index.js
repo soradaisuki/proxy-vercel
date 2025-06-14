@@ -16,19 +16,15 @@ app.get("/api/proxy", async (req, res) => {
       headless: true,
       args: [
         '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--proxy-server=http://103.162.15.96:8947',
+        '--disable-setuid-sandbox'
       ]
     });
 
     const page = await browser.newPage();
 
-    await page.authenticate({
-      username: "64UDF",
-      password: "fhd45y"
-    });
-
-    await page.setUserAgent("Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1");
+    await page.setUserAgent(
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1"
+    );
 
     await page.goto(url, { waitUntil: "networkidle2", timeout: 30000 });
 
@@ -52,3 +48,4 @@ app.get("/api/proxy", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Puppeteer proxy server listening on http://localhost:${PORT}`);
 });
+
