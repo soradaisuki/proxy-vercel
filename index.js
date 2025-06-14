@@ -4,14 +4,8 @@ const puppeteer = require("puppeteer");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-let chromePath = null;
-
-(async () => {
-  const browserFetcher = puppeteer.createBrowserFetcher();
-  const revisionInfo = await browserFetcher.download(puppeteer._preferredRevision);
-  chromePath = revisionInfo.executablePath;
-  console.log("✅ Chrome downloaded at:", chromePath);
-})();
+// Puppeteer Chrome path trên Render sau khi cài bằng `npx puppeteer browsers install chrome`
+const chromePath = "/opt/render/.cache/puppeteer/chrome/linux-137.0.7151.70/chrome-linux64/chrome";
 
 app.get("/api/proxy", async (req, res) => {
   const { url } = req.query;
@@ -20,15 +14,11 @@ app.get("/api/proxy", async (req, res) => {
     return res.status(400).json({ error: "Thiếu hoặc sai định dạng query `url`" });
   }
 
-  if (!chromePath) {
-    return res.status(500).json({ error: "Chrome chưa sẵn sàng, thử lại sau vài giây." });
-  }
-
   try {
     const browser = await puppeteer.launch({
       executablePath: chromePath,
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
 
     const page = await browser.newPage();
